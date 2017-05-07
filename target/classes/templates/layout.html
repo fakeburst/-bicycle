@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="site-head">
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
+		<link rel="stylesheet" href="../public/css/metro.min.css" th:href="@{/css/metro.min.css}" />
+        <link rel="icon" href="../public/img/favicon.ico" th:href="@{/img/favicon.ico}" />
+        <script src="../public/js/jquery-3.2.1.min.js" th:src="@{/js/jquery-3.2.1.min.js}"></script>
+        <script src="../public/js/blog-scripts.js" th:src="@{/js/blog-scripts.js}"></script>
+        <script src="../public/js/metro.min.js" th:src="@{/js/metro.min.js}"></script>
+        <meta th:include="this :: head" th:remove="tag"/>
+    </head>
+    <body>
+    <header th:fragment="site-header" th:remove="tag">
+      
+	  <header>		
+	<div class="app-bar">
+    <span class="app-bar-divider"></span>
+    <ul class="app-bar-menu">
+						<li><a href="index.html" th:href="@{/}">Home</a></li>
+						<li><a href="users/login.html" th:href="@{/users/login}" th:if="${session.currentUser == null}">Login</a></li>
+                        <li><a href="users/logout" th:href="@{/users/logout}" th:if="${session.currentUser != null}">Logout</a></li>
+						<li><a href="users/register.html" th:href="@{/users/register}">Register</a></li>
+                        <li><a href="posts/index.html" th:href="@{/posts}">Posts</a></li>
+                        <li><a href="posts/create.html" th:href="@{/posts/create}">Create Post</a></li>
+    </ul>
+	</div>
+	</header>
+
+
+        <ul id="messages" th:with="notifyMessages=${session[T(blog.services
+          .MessageServiceImpl).NOTIFY_MSG_SESSION_KEY]}">
+            <li th:each="msg : ${notifyMessages}" th:text="${msg.text}"
+                th:class="${#strings.toLowerCase(msg.type)}">
+            </li>
+            <span th:if="${notifyMessages}" th:remove="all" th:text="${session.remove(T(blog.services.MessageServiceImpl).NOTIFY_MSG_SESSION_KEY)}"></span>
+
+        </ul>
+    </header>
+	
+	
+    </body>
+</html>
