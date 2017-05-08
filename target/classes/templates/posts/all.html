@@ -29,6 +29,12 @@
                 <span th:if="${session.currentUser != null}" th:switch="${p.author.username}">
                             <a th:href="@{'/posts/delete/' + ${p.id}}" th:case="${currentUser}">Delete</a>
                         </span>
+<<<<<<< HEAD
+=======
+                <span th:if="${session.currentUser != null}" th:switch="${p.author.username}">
+                    <a th:href="@{'/posts/view/' + ${p.id}}">Comment</a>
+                </span>
+>>>>>>> Likes and comments
             </article>
             </main>
         </div>

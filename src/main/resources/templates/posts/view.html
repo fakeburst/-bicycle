@@ -32,7 +32,39 @@
                     <span th:switch="${post.author.getUsername()}">
                             <a th:href="@{'/posts/delete/' + ${post.id}}" th:case="${currentUser}">Delete</a>
                         </span>
+<<<<<<< HEAD
                 </article>
+=======
+                    <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
+                        <form method="get">
+                        <a th:href="@{'/posts/like/'+ ${post.id}}"><img class="manImg" height="25" width="25" src="/img/likeico.png" ></img></a>
+
+                        </form>
+                        <!-- <div class="likes" th:object="${likesCount}">
+                              <span class="likesCount" th:text="${likesCount.likes}"></span>
+                          </div>-->
+                    </span>
+                </article>
+
+                <div >
+                    <h1>Comments:</h1>
+                    <table>
+                    <tbody class="table-hover" >
+                    <tr th:each="comment : ${commentList}">
+                        <td class="text-left" th:text = "${comment.comment}"></td>
+                        <td class="text-left" th:text = "${comment.date}"></td>
+
+                    </tr>
+                    </tbody>
+                    </table>
+                </div>
+
+                <h1>Create Comment:</h1>
+                <form action="#" th:object="${comment}" method="post">
+                    <input type="text" th:field="*{comment}" id="createComment" name="createComment"/>
+                    <input type="submit" />
+                </form>
+>>>>>>> Likes and comments
             </main>
         </div>
         <div class="cell"></div>
