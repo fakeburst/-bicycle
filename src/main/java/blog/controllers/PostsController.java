@@ -1,11 +1,10 @@
 package blog.controllers;
 
-<<<<<<< HEAD
 import blog.forms.CreatePost;
 import blog.forms.EditPost;
 import blog.models.Post;
 import blog.models.User;
-=======
+
 import blog.forms.CreateComment;
 import blog.forms.CreatePost;
 import blog.forms.EditPost;
@@ -16,27 +15,23 @@ import blog.models.Comment;
 import blog.models.User;
 import blog.repositories.CommentRepository;
 import blog.repositories.LikeRepository;
->>>>>>> Likes and comments
+
 import blog.services.MessageService;
 import blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-<<<<<<< HEAD
-import org.springframework.web.bind.annotation.ModelAttribute;
-=======
->>>>>>> Likes and comments
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-<<<<<<< HEAD
-=======
+
 import java.util.Date;
->>>>>>> Likes and comments
+
 import java.util.List;
 
 @Controller
@@ -50,12 +45,9 @@ public class PostsController {
     @Autowired
     private MessageService notifyService;
 
-<<<<<<< HEAD
-    @RequestMapping("/posts/view/{id}")
-    public String view(@PathVariable("id") Long id, Model model) {
-        User currentUser = (User) httpSession.getAttribute("currentUser");
-        Post post = postService.findById(id);
-=======
+
+
+
     @Autowired
     private CommentRepository commentRepository;
 
@@ -72,16 +64,16 @@ public class PostsController {
 
         Post post = postService.findById(id);
         List<Comment> commentList = commentRepository.findAllByPostId(id);
->>>>>>> Likes and comments
+
         if (post == null) {
             notifyService.addErrorMessage("Cannot find post #" + id);
             return "redirect:/";
         }
-<<<<<<< HEAD
-=======
+
+
         model.addAttribute("commentList",commentList);
         model.addAttribute("comment",createComment);
->>>>>>> Likes and comments
+
         model.addAttribute("post", post);
         if(currentUser != null)
             model.addAttribute("currentUser", currentUser.getUsername());
@@ -90,11 +82,7 @@ public class PostsController {
         return "posts/view";
     }
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> Likes and comments
     @RequestMapping("/posts/edit/{id}")
     public String editPost(@PathVariable("id") Long id, Model model, EditPost editPost) {
         User currentUser = (User) httpSession.getAttribute("currentUser");
@@ -140,8 +128,7 @@ public class PostsController {
         notifyService.addInfoMessage("Successfully edited");
         return "redirect:/";
     }
-<<<<<<< HEAD
-=======
+
     @RequestMapping(value = "/posts/view/{id}" , method = RequestMethod.POST)
     public String addComment(@PathVariable Long id, CreateComment createComment){
         Comment comment = new Comment();
@@ -156,7 +143,7 @@ public class PostsController {
     }
 
 
->>>>>>> Likes and comments
+
 
     @RequestMapping("/posts/create")
     public String createPost(CreatePost createPost) {
@@ -179,28 +166,20 @@ public class PostsController {
 
         notifyService.addInfoMessage("Successfully created");
         return "redirect:/";
+
     }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> Likes and comments
-    @RequestMapping("/posts")
-    public String allPosts(Model model) {
-        List<Post> allPosts = postService.findAllStartingFromNew();
-        System.out.println(allPosts.size());
-        model.addAttribute("allPosts", allPosts);
-        User currentUser = (User)httpSession.getAttribute("currentUser");
-        if(currentUser != null)
-            model.addAttribute("currentUser", currentUser.getUsername());
-        else
-            model.addAttribute("currentUser", "");
-<<<<<<< HEAD
-        return "posts/all";};
-=======
-        return "posts/all";}
-
+        @RequestMapping("/posts")
+            public String allPosts(Model model) {
+                    List<Post> allPosts = postService.findAllStartingFromNew();
+                    System.out.println(allPosts.size());
+                    model.addAttribute("allPosts", allPosts);
+                   User currentUser = (User)httpSession.getAttribute("currentUser");
+                    if(currentUser != null)
+                            model.addAttribute("currentUser", currentUser.getUsername());
+                    else
+                        model.addAttribute("currentUser", "");
+                   return "posts/all";}
 
     @RequestMapping(value = "/posts/like/{id}" , method = RequestMethod.GET )
     public String addLike(@PathVariable Long id, Model model){
@@ -215,5 +194,5 @@ public class PostsController {
         model.addAttribute("likesCount",likesCount);
         return "redirect:/";
     }
->>>>>>> Likes and comments
+
 }
