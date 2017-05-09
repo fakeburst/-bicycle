@@ -17,6 +17,8 @@
     <div class="cell">
         <h1>Register in the Blog</h1>
         <form method="post" th:object="${register}">
+            <div><label for="email">Email:</label></div>
+            <input id="email" type="email" name="email" th:value="*{email}" />
         <div><label for="username">Username:</label></div>
         <input id="username" type="text" name="username" th:value="*{username}" />
         <span class="formError" th:if="${#fields.hasErrors('username')}"

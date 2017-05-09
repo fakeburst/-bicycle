@@ -93,6 +93,10 @@ public class PostsController {
         }
         System.out.println(post.getAuthor().getUsername());
         System.out.println(currentUser.getUsername());
+        if(!currentUser.isVerified()) {
+                        notifyService.addErrorMessage("Verify your account first");
+                        return "redirect:/";
+                    }
         if (!post.getAuthor().getUsername().equals(currentUser.getUsername())) {
             notifyService.addErrorMessage("Forbidden");
             return "redirect:/";
@@ -109,6 +113,11 @@ public class PostsController {
             notifyService.addErrorMessage("Cannot find post #" + id);
             return "redirect:/";
         }
+        if(!currentUser.isVerified()) {
+                        notifyService.addErrorMessage("Verify your account first");
+                        return "redirect:/";
+                    }
+
         if (!post.getAuthor().getUsername().equals(currentUser.getUsername())) {
             notifyService.addErrorMessage("Forbidden");
             return "redirect:/";
@@ -137,7 +146,16 @@ public class PostsController {
         Comment comment = new Comment();
         Post post = postService.findById(id);
         comment.setComment(createComment.getComment());
-        comment.setUser((User) httpSession.getAttribute("currentUser"));
+        User currentUser = (User) httpSession.getAttribute("currentUser");
+                if(currentUser == null) {
+                        notifyService.addErrorMessage("Login first");
+                        return "redirect:/";
+                    }
+                if(!currentUser.isVerified()) {
+                        notifyService.addErrorMessage("Verify your account first");
+                        return "redirect:/";
+                    }
+                comment.setUser(currentUser);
         comment.setPost(post);
         Date date = new Date();
         comment.setDate(date);

@@ -29,6 +29,11 @@ public class UserServiceJpa implements UserService {
     public User create(User user) {
         return this.userRepo.save(user);
     }
+
+    @Override
+     public List<User> findByEmail_id(String email_id) {
+        return this.userRepo.findByEmail_id(email_id);
+            }
     @Override
     public User edit(User user) {
         return this.userRepo.save(user);
