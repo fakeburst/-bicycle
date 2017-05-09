@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="layout :: site-head">
-    <title>Create Post</title>
+    <script type="text/javascript" src="../public/js/editMap.js" th:src="@{/js/editMap.js}"></script>
+    <title>Edit Post</title>
 </head>
 
 <body>
@@ -16,6 +17,11 @@
     <div class="cell"></div>
     <div class="cell">
         <h1>Edit Post</h1>
+        <div id="myMap" style="background-color: #1d1d1d ; height: 600px; width: 600px">
+        </div>
+        <script th:inline="javascript">
+            google.maps.event.addDomListener(window, "load", myMap([[${post.route}]]));
+        </script>
         <form th:method="PUT" th:object="${editPost}" id="form">
         <div><label for="title">Title:</label></div>
         <input id="title" type="text" name="title" th:value="${post.title}" />
@@ -23,6 +29,7 @@
 
         <div><label for="body">Body:</label></div>
             <textarea rows="4" id="body" cols="50" name="body"  th:value="${post.body}" form="form" th:text="${post.body}"></textarea>
+            <input th:id="route" type="hidden" name="route" th:value="*{route}" />
 
         <div><input type="submit" value="Edit"/></div>
     </form>

@@ -1,6 +1,8 @@
 var _waypoints = new Array();
 var kievLoc = new google.maps.LatLng(50.45041656494141, 30.52354049682617);
 var markers = new Array();
+var stack = new Array();
+var displayRoute = function(test){};
 
 function myMap() {
     var map = new google.maps.Map(document.getElementById('myMap'), {
@@ -31,9 +33,9 @@ function myMap() {
         map: map,
     });
 
-    function displayRoute(service, display, waypoints) {
+    displayRoute = function displayRoute(waypoints) {
 
-        service.route({
+        directionsService.route({
             origin: waypoints[0],
             destination: waypoints[waypoints.length - 1],
             waypoints: waypoints.slice(1, waypoints.length - 1),
@@ -41,7 +43,7 @@ function myMap() {
             avoidTolls: true
         }, function(response, status) {
             if (status === 'OK') {
-                display.setDirections(response);
+                directionsDisplay.setDirections(response);
             } else {
                 alert('Could not display directions due to: ' + status);
             }
@@ -63,7 +65,7 @@ function myMap() {
             markers.push(marker);
         } else {
             setMapOnAll(null);
-            displayRoute(directionsService, directionsDisplay, _waypoints);
+            displayRoute(_waypoints);
         }
 
     });
@@ -74,12 +76,13 @@ function myMap() {
         _waypoints[0] = request.origin;
         if (_waypoints.length > 2) {
             _waypoints[_waypoints.length - 1] = request.destination;
-            for (var i = 1; i < _waypoints.length - 2; i++) {
+            for (var i = 1; i < _waypoints.length - 1; i++) {
                 console.log("Kek");
                 _waypoints[i] = request.waypoints[i - 1]
             }
         }
         document.getElementById("route").value = JSON.stringify(_waypoints);
+        stack.push(_waypoints);
     });
 
 
@@ -89,4 +92,9 @@ function myMap() {
         }
     }
 
+}
+
+function back() {
+    _waypoints = stack.pop();
+    displayRoute(_waypoints)
 }

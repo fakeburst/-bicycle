@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout :: site-head">
+    <script type="text/javascript" src="../public/js/readMap.js" th:src="@{/js/readMap.js}"></script>
     <title>Generic Blog</title>
 </head>
 <body>
@@ -24,7 +25,10 @@
             </p>
             <span class="glyphicon glyphicon-time" th:text="${#dates.format(p.date, 'dd-MMM-yyyy')}"></span>
             <hr/>
-            <img class="img-responsive" src="http://placehold.it/900x300" alt=""/>
+            <div th:id="${p.id}" style="background-color: #1d1d1d ; height: 600px; width: 600px"></div>
+            <script th:inline="javascript">
+                google.maps.event.addDomListener(window, "load", myMap([[${p.route}]], [[${p.id}]]));
+            </script>
             <hr/>
             <span th:utext="${p.body}"><p></p></span>
             <span th:if="${session.currentUser != null}" th:switch="${p.author.username}">

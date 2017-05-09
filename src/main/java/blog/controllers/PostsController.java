@@ -124,6 +124,9 @@ public class PostsController {
         Post post = postService.findById(id);
         post.setTitle(editPost.getTitle());
         post.setBody(editPost.getBody());
+        if(post.getRoute().equals(editPost.getRoute()))
+            System.out.println("Equal");
+        post.setRoute(editPost.getRoute());
         postService.edit(post);
         notifyService.addInfoMessage("Successfully edited");
         return "redirect:/";

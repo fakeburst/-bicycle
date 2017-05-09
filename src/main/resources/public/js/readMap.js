@@ -1,13 +1,13 @@
-function myMap(route) {
+function myMap(route, id) {
     route = JSON.parse(route);
     console.log(route[0]);
 
     var myOptions = {
-        zoom: 8,
+        zoom: 12,
         center: route[0].location,
     };
 
-    var map = new google.maps.Map(document.getElementById("myMap"),
+    var map = new google.maps.Map(document.getElementById(id),
         myOptions);
 
     var directionsService = new google.maps.DirectionsService;
@@ -34,8 +34,6 @@ function myMap(route) {
         });
     }
 
-    google.maps.event.addListener(map, "click", function(event) {
-        displayRoute(directionsService, directionsDisplay, route);
-    });
+    displayRoute(directionsService, directionsDisplay, route);
 
 }

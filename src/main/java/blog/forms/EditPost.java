@@ -14,6 +14,8 @@ public class EditPost {
     @Size(min=1, max=500)
     private String body;
 
+    private String route;
+
     public String getTitle() {
         return title;
     }
@@ -28,5 +30,13 @@ public class EditPost {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
     }
 }
