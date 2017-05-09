@@ -45,23 +45,16 @@ public class PostsController {
     @Autowired
     private MessageService notifyService;
 
-
-
-
     @Autowired
     private CommentRepository commentRepository;
 
     @Autowired
     private LikeRepository likeRepository;
 
-
     @RequestMapping("/posts/view/{id}")
     public String view(@PathVariable("id") Long id, Model model) {
         CreateComment createComment = new CreateComment();
-
         User currentUser = (User) httpSession.getAttribute("currentUser");
-
-
         Post post = postService.findById(id);
         List<Comment> commentList = commentRepository.findAllByPostId(id);
 
@@ -69,7 +62,6 @@ public class PostsController {
             notifyService.addErrorMessage("Cannot find post #" + id);
             return "redirect:/";
         }
-
 
         model.addAttribute("commentList",commentList);
         model.addAttribute("comment",createComment);
@@ -82,7 +74,6 @@ public class PostsController {
         return "posts/view";
     }
 
-
     @RequestMapping("/posts/edit/{id}")
     public String editPost(@PathVariable("id") Long id, Model model, EditPost editPost) {
         User currentUser = (User) httpSession.getAttribute("currentUser");
@@ -93,6 +84,10 @@ public class PostsController {
         }
         System.out.println(post.getAuthor().getUsername());
         System.out.println(currentUser.getUsername());
+        if(!currentUser.isVerified()) {
+            notifyService.addErrorMessage("Verify your account first");
+            return "redirect:/";
+        }
         if (!post.getAuthor().getUsername().equals(currentUser.getUsername())) {
             notifyService.addErrorMessage("Forbidden");
             return "redirect:/";
@@ -107,6 +102,10 @@ public class PostsController {
         Post post = postService.findById(id);
         if (post == null) {
             notifyService.addErrorMessage("Cannot find post #" + id);
+            return "redirect:/";
+        }
+        if(!currentUser.isVerified()) {
+            notifyService.addErrorMessage("Verify your account first");
             return "redirect:/";
         }
         if (!post.getAuthor().getUsername().equals(currentUser.getUsername())) {
@@ -137,7 +136,16 @@ public class PostsController {
         Comment comment = new Comment();
         Post post = postService.findById(id);
         comment.setComment(createComment.getComment());
-        comment.setUser((User) httpSession.getAttribute("currentUser"));
+        User currentUser = (User) httpSession.getAttribute("currentUser");
+        if(currentUser == null) {
+            notifyService.addErrorMessage("Login first");
+            return "redirect:/";
+        }
+        if(!currentUser.isVerified()) {
+            notifyService.addErrorMessage("Verify your account first");
+            return "redirect:/";
+        }
+        comment.setUser(currentUser);
         comment.setPost(post);
         Date date = new Date();
         comment.setDate(date);
@@ -145,11 +153,17 @@ public class PostsController {
         return "redirect:/";
     }
 
-
-
-
     @RequestMapping("/posts/create")
     public String createPost(CreatePost createPost) {
+        User currentUser = (User) httpSession.getAttribute("currentUser");
+        if(currentUser == null) {
+            notifyService.addErrorMessage("Login first");
+            return "redirect:/";
+        }
+        if(!currentUser.isVerified()) {
+            notifyService.addErrorMessage("Verify your account first");
+            return "redirect:/";
+        }
         return "posts/create";
     }
 
@@ -163,6 +177,15 @@ public class PostsController {
         Post newPost = new Post();
         newPost.setTitle(createPost.getTitle());
         newPost.setBody(createPost.getBody());
+        User currentUser = (User) httpSession.getAttribute("currentUser");
+        if(currentUser == null) {
+            notifyService.addErrorMessage("Login first");
+            return "redirect:/";
+        }
+        if(!currentUser.isVerified()) {
+            notifyService.addErrorMessage("Verify your account first");
+            return "redirect:/";
+        }
         newPost.setAuthor((User) httpSession.getAttribute("currentUser"));
         newPost.setRoute(createPost.getRoute());
         System.out.println(((User) httpSession.getAttribute("currentUser")).getId());
@@ -170,24 +193,28 @@ public class PostsController {
 
         notifyService.addInfoMessage("Successfully created");
         return "redirect:/";
-
     }
 
-        @RequestMapping("/posts")
-            public String allPosts(Model model) {
-                    List<Post> allPosts = postService.findAllStartingFromNew();
-                    System.out.println(allPosts.size());
-                    model.addAttribute("allPosts", allPosts);
-                   User currentUser = (User)httpSession.getAttribute("currentUser");
-                    if(currentUser != null)
-                            model.addAttribute("currentUser", currentUser.getUsername());
-                    else
-                        model.addAttribute("currentUser", "");
-                   return "posts/all";}
+    @RequestMapping("/posts")
+        public String allPosts(Model model) {
+                List<Post> allPosts = postService.findAllStartingFromNew();
+                System.out.println(allPosts.size());
+                model.addAttribute("allPosts", allPosts);
+               User currentUser = (User)httpSession.getAttribute("currentUser");
+                if(currentUser != null)
+                        model.addAttribute("currentUser", currentUser.getUsername());
+                else
+                    model.addAttribute("currentUser", "");
+               return "posts/all";
+    }
 
     @RequestMapping(value = "/posts/like/{id}" , method = RequestMethod.GET )
     public String addLike(@PathVariable Long id, Model model){
         User user = (User) httpSession.getAttribute("currentUser");
+        if(!user.isVerified()) {
+            notifyService.addErrorMessage("Verify your account first");
+            return "redirect:/";
+        }
         Post post = postService.findById(id);
         Likes like = new Likes(post,user);
         likeRepository.save(like);
