@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="layout :: site-head">
+    <script type="text/javascript" src="../public/js/readMap.js" th:src="@{/js/readMap.js}"></script>
     <title th:text="${post.title}">View Post</title>
 </head>
 
@@ -14,57 +15,56 @@
         <div class="cell"></div>
         <div class="cell colspan4">
             <main id="posts">
-                <article>
-                    <h2 class="title" th:text="${post.title}">Post Title</h2>
-                    <div class="date">
-                        <i>Posted on</i>
-                        <span th:text="${#dates.format(post.date, 'dd-MMM-yyyy')}">22-May-2016</span>
-                        <span th:if="${post.author}" th:remove="tag">
-                    <i>by</i>
-                    <span th:text="${post.author.fullName != null ?
-                                     post.author.fullName : post.author.username}">Svetlin Nakov</span>
-                    </span>
+                <div id="myMap" class="mapHolder" style="background-color: #1d1d1d ; height: 600px; width: 600px">
+
+
+                <script th:inline="javascript">
+                    google.maps.event.addDomListener(window, "load", myMap([[${post.route}]]));
+                </script>
+
+                <div class="detailBox" style="position: absolute ; right: 75px; top: -45px">
+                    <div class="titleBox">
+                        <label>Comment Box</label>
+                        <button type="button" class="close" aria-hidden="true">&times;</button>
                     </div>
-                    <p class="content" th:utext="${post.body}">Post content</p>
-                    <span th:switch="${post.author.username}">
-                            <a th:href="@{'/posts/edit/' + ${post.id}}" th:case="${currentUser}">Edit</a>
+                    <div class="commentBox" >
+
+                        <p class="taskDescription" th:utext="${post.body}"></p>
+                        <p class="title" th:text="${post.title}">Post Title</p>
+                        <p class="date" th:text="${#dates.format(post.date, 'dd-MMM-yyyy')}"></p>
+                        <span th:switch="${post.author.username}">
+                        <a th:href="@{'/posts/edit/' + ${post.id}}" th:case="${currentUser}">Edit</a>
                         </span>
-                    <span th:switch="${post.author.getUsername()}">
+                        <span th:switch="${post.author.getUsername()}">
                             <a th:href="@{'/posts/delete/' + ${post.id}}" th:case="${currentUser}">Delete</a>
                         </span>
-<<<<<<< HEAD
-                </article>
-=======
-                    <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
+                        <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
                         <form method="get">
                         <a th:href="@{'/posts/like/'+ ${post.id}}"><img class="manImg" height="25" width="25" src="/img/likeico.png" ></img></a>
-
                         </form>
-                        <!-- <div class="likes" th:object="${likesCount}">
-                              <span class="likesCount" th:text="${likesCount.likes}"></span>
-                          </div>-->
-                    </span>
-                </article>
+                        </span>
+                    </div>
+                    <div class="actionBox">
+                        <ul class="commentList" th:each="comment : ${commentList}">
+                            <li>
+                                <div class="commentText">
+                                    <p class=""  th:text = "${comment.comment}"></p>
+                                    <span class="date sub-text"  th:text = "${comment.date}"></span>
 
-                <div >
-                    <h1>Comments:</h1>
-                    <table>
-                    <tbody class="table-hover" >
-                    <tr th:each="comment : ${commentList}">
-                        <td class="text-left" th:text = "${comment.comment}"></td>
-                        <td class="text-left" th:text = "${comment.date}"></td>
-
-                    </tr>
-                    </tbody>
-                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                        <form class="form-inline" role="form" th:object="${comment}" method="post">
+                            <div class="form-group">
+                                <input class="form-control" type="text" placeholder="Your comments" th:field="*{comment}"/>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-default">Add</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-                <h1>Create Comment:</h1>
-                <form action="#" th:object="${comment}" method="post">
-                    <input type="text" th:field="*{comment}" id="createComment" name="createComment"/>
-                    <input type="submit" />
-                </form>
->>>>>>> Likes and comments
+                </div>
             </main>
         </div>
         <div class="cell"></div>

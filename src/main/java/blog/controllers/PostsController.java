@@ -161,6 +161,7 @@ public class PostsController {
         newPost.setTitle(createPost.getTitle());
         newPost.setBody(createPost.getBody());
         newPost.setAuthor((User) httpSession.getAttribute("currentUser"));
+        newPost.setRoute(createPost.getRoute());
         System.out.println(((User) httpSession.getAttribute("currentUser")).getId());
         postService.create(newPost);
 

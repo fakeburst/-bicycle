@@ -22,6 +22,8 @@ public class Post {
     @Column(nullable = false)
     private Date date = new Date();
 
+    @Column (nullable = false)
+    private String route;
 
     public Long getId() {
         return id;
@@ -65,11 +67,12 @@ public class Post {
 
     public Post() {}
 
-    public Post(Long id, String title, String body, User author) {
+    public Post(Long id, String title, String body, User author, String route) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.author = author;
+        this.route = route;
     }
 
     @Override
@@ -81,5 +84,13 @@ public class Post {
                 ", author=" + author +
                 ", date=" + date +
                 '}';
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
     }
 }

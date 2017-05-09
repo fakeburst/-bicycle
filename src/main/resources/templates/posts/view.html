@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="layout :: site-head">
+    <script type="text/javascript" src="../public/js/readMap.js" th:src="@{/js/readMap.js}"></script>
     <title th:text="${post.title}">View Post</title>
 </head>
 
@@ -14,8 +15,12 @@
         <div class="cell"></div>
         <div class="cell colspan4">
             <main id="posts">
-                <div class="mapHolder" style="background-color: #1d1d1d ; height: 600px; width: 600px">
-                    test
+                <div id="myMap" class="mapHolder" style="background-color: #1d1d1d ; height: 600px; width: 600px">
+
+
+                <script th:inline="javascript">
+                    google.maps.event.addDomListener(window, "load", myMap([[${post.route}]]));
+                </script>
 
                 <div class="detailBox" style="position: absolute ; right: 75px; top: -45px">
                     <div class="titleBox">

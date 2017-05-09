@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="layout :: site-head">
+    <script type="text/javascript" src="../public/js/createMap.js" th:src="@{/js/createMap.js}"></script>
     <title>Create Post</title>
 </head>
 
@@ -15,6 +16,12 @@
     <div class="cell"></div>
     <div class="cell">
         <h1>Create new Post</h1>
+        <div id="myMap" style="height: 600px; width: 60%">
+
+        </div>
+        <script type="text/javascript" language="javascript">
+            myMap();
+        </script>
         <form method="post" th:object="${createPost}" id="form">
         <div><label for="title">Title:</label></div>
         <input id="title" type="text" name="title" th:value="*{title}" />
@@ -22,9 +29,10 @@
               th:errors="*{title}">Invalid title</span>
 
         <div><label for="body" th:value="*{body}">Body:</label></div>
-            <textarea rows="4" cols="50" name="body"  th:value="*{body}" form="form"></textarea>
+            <textarea rows="4" id="body" cols="50" name="body"  th:value="*{body}" form="form"></textarea>
         <span class="formError" th:if="${#fields.hasErrors('body')}"
               th:errors="*{body}">Invalid body</span>
+            <input id="route" type="hidden" name="route" th:value="*{route}" />
 
             <div><input type="submit" value="Create"/></div>
     </form>
