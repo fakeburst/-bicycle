@@ -10,5 +10,4 @@ public interface UserService {
     User create(User user);
     User edit(User user);
     void deleteById(Long id);
-    List<User> findByEmail_id(String email_id);
 }

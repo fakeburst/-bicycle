@@ -13,9 +13,6 @@ public class Register {
 
     private String fullName;
 
-    @NotNull
-    private String email;
-
     public String getFullName() {
         return fullName;
     }
@@ -38,13 +35,5 @@ public class Register {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }

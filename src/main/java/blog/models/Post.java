@@ -2,6 +2,7 @@ package blog.models;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -24,6 +25,9 @@ public class Post {
 
     @Column (nullable = false)
     private String route;
+
+    @OneToMany (fetch = FetchType.LAZY , mappedBy = "post")
+    private List<Likes> likesList;
 
     public Long getId() {
         return id;
@@ -92,5 +96,13 @@ public class Post {
 
     public void setRoute(String route) {
         this.route = route;
+    }
+
+    public List<Likes> getLikesList() {
+        return likesList;
+    }
+
+    public void setLikesList(List<Likes> likesList) {
+        this.likesList = likesList;
     }
 }

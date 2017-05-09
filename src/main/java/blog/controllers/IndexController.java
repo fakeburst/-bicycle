@@ -1,7 +1,9 @@
 package blog.controllers;
 
+import blog.models.Likes;
 import blog.models.Post;
 import blog.models.User;
+import blog.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,9 @@ public class IndexController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private PostRepository postRepository;
     @RequestMapping("/")
     public String index(Model model) {
         User currentUser = (User) httpSession.getAttribute("currentUser");
@@ -27,6 +32,12 @@ public class IndexController {
         List<Post> latest3Posts = latest5Posts.stream()
                 .limit(3).collect(Collectors.toList());
         model.addAttribute("latest3posts", latest3Posts);
+
+        List<Post> postList = postRepository.test();
+
+        model.addAttribute("postList" , postList);
+        System.out.print(postList.get(0).getBody()+"---------------------------------------------------");
+        System.out.print(postList.get(0).getRoute()+"---------------------------------------------------");
         if(currentUser != null)
             model.addAttribute("currentUser", currentUser.getUsername());
         else

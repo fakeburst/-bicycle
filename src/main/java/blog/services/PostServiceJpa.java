@@ -24,7 +24,7 @@ public class PostServiceJpa implements PostService {
 
     @Override
     public List<Post> findLatest5() {
-        return this.postRepo.findLatest5Posts( new PageRequest(0, 1));
+        return this.postRepo.findLatest5Posts( new PageRequest(0, 5));
     }
     @Override
     public Post findById(Long id) {

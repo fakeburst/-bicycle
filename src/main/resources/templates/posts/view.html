@@ -15,14 +15,15 @@
         <div class="cell"></div>
         <div class="cell colspan4">
             <main id="posts">
-                <div th:id="${post.id}" class="mapHolder" style="background-color: #1d1d1d ; height: 600px; width: 600px">
+                <div th:id="${post.id}" class="mapHolder" style=" height: 600px; width: 600px">
 
 
                 <script th:inline="javascript">
                     google.maps.event.addDomListener(window, "load", myMap([[${post.route}]], [[${post.id}]]));
                 </script>
+                </div>
 
-                <div class="detailBox" style="position: absolute ; right: 75px; top: -45px">
+                <div class="detailBox" style="position: absolute ; left: 675px; top: -45px">
                     <div class="titleBox">
                         <label>Comment Box</label>
                         <button type="button" class="close" aria-hidden="true">&times;</button>
@@ -64,7 +65,7 @@
                         </form>
                     </div>
                 </div>
-                </div>
+
             </main>
         </div>
         <div class="cell"></div>

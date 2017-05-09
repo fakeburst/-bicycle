@@ -13,13 +13,13 @@ public class Likes {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Post post;
 
     @OneToOne
     private User author;
 
-    private Integer likes;
+
 
     public Long getId() {
         return id;
@@ -50,11 +50,7 @@ public class Likes {
 
     }
 
-    public void setLikes(Integer likes) {
-        this.likes = likes;
-    }
 
-    public Integer getLikes() {
-        return likes;
-    }
+
+    public Likes(){}
 }

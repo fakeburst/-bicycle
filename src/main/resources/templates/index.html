@@ -39,8 +39,8 @@
 		</div>
         <div class="cell colspan3">
 		<aside>
-		<h2>Recent Posts</h2>
-            <div class="grid" th:each="p : ${latest5posts}">
+		<h2>Top Rated Tracks</h2>
+            <div class="grid" th:each="p : ${postList}">
                 <div class="row">
                     <a href="#" th:text="${p.title}" th:href="@{/posts/view/{id}/(id=${p.id})}"></a>
                 </div>
